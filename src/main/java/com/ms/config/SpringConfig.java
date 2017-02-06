@@ -1,19 +1,21 @@
 package com.ms.config;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -21,46 +23,38 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 /**
  * @author Jason
  * @since v1.0
  */
 @Configuration
+@PropertySource("classpath:config.properties")
 @EnableWebMvc
-@EnableWebSecurity
 @EnableJpaRepositories(basePackages = "com.ms.dao")
 @ComponentScan(basePackages = "com.ms")
-public class SpringConfig extends WebSecurityConfigurerAdapter {
+public class SpringConfig {
 
     @Bean
-    public ViewResolver viewResolver() {
+    public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean
+    public ViewResolver viewResolver(@Value("${prefix}") String prefix ,@Value("${suffix}") String suffix) {
         InternalResourceViewResolver vr = new InternalResourceViewResolver();
-        vr.setPrefix("/WEB-INF/");
-        vr.setSuffix(".jsp");
+        vr.setPrefix(prefix);
+        vr.setSuffix(suffix);
         return vr;
     }
 
     @Bean
-    public Properties dbProperties() throws IOException {
-        Properties p = new Properties();
-        ClassPathResource cpr = new ClassPathResource("db.properties");
-        InputStream is = cpr.getInputStream();
-        p.load(is);
-        is.close();
-        return p;
-    }
-
-    @Bean
-    public DataSource dataSource(Properties dbProperties) throws PropertyVetoException {
+    public DataSource dataSource(@Value("${DriverClass}") String driverClass , @Value("${User}") String user , @Value("${Password}") String password , @Value("${JdbcUrl}") String jdbcUrl) throws PropertyVetoException {
         ComboPooledDataSource ds = new ComboPooledDataSource();
-        ds.setDriverClass(dbProperties.getProperty("DriverClass"));
-        ds.setUser(dbProperties.getProperty("User"));
-        ds.setPassword(dbProperties.getProperty("Password"));
-        ds.setJdbcUrl(dbProperties.getProperty("JdbcUrl"));
+        ds.setDriverClass(driverClass);
+        ds.setUser(user);
+        ds.setPassword(password);
+        ds.setJdbcUrl(jdbcUrl);
         return ds;
     }
 
@@ -89,8 +83,12 @@ public class SpringConfig extends WebSecurityConfigurerAdapter {
         return jtm;
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        super.configure(auth);
+    @Bean
+    public FilterSecurityInterceptor filterSecurityInterceptor(AccessDecisionManager adm , FilterInvocationSecurityMetadataSource fisms) {
+        FilterSecurityInterceptor fsi = new FilterSecurityInterceptor();
+        fsi.setSecurityMetadataSource(fisms);
+        fsi.setAccessDecisionManager(adm);
+        return fsi;
     }
+
 }
