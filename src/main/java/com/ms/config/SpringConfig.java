@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.hibernate5.support.OpenSessionInViewFilter;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -16,9 +16,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -30,23 +28,9 @@ import java.beans.PropertyVetoException;
  */
 @Configuration
 @PropertySource("classpath:config.properties")
-@EnableWebMvc
 @EnableJpaRepositories(basePackages = "com.ms.dao")
 @ComponentScan(basePackages = "com.ms")
 public class SpringConfig {
-
-    @Bean
-    public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
-    }
-
-    @Bean
-    public ViewResolver viewResolver(@Value("${prefix}") String prefix ,@Value("${suffix}") String suffix) {
-        InternalResourceViewResolver vr = new InternalResourceViewResolver();
-        vr.setPrefix(prefix);
-        vr.setSuffix(suffix);
-        return vr;
-    }
 
     @Bean
     public DataSource dataSource(@Value("${DriverClass}") String driverClass , @Value("${User}") String user , @Value("${Password}") String password , @Value("${JdbcUrl}") String jdbcUrl) throws PropertyVetoException {
@@ -81,6 +65,18 @@ public class SpringConfig {
         JpaTransactionManager jtm = new JpaTransactionManager();
         jtm.setEntityManagerFactory(entityManagerFactory);
         return jtm;
+    }
+
+    @Bean
+    public OpenSessionInViewFilter openSessionInViewFilter() {
+        return new OpenSessionInViewFilter();
+    }
+
+    @Bean
+    public SimpleUrlHandlerMapping simpleUrlHandlerMapping(OpenSessionInViewFilter osiv) {
+        SimpleUrlHandlerMapping suhm = new SimpleUrlHandlerMapping();
+        suhm.setInterceptors(osiv);
+        return suhm;
     }
 
     @Bean

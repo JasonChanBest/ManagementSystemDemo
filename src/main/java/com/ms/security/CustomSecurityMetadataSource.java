@@ -4,6 +4,8 @@ import com.ms.dao.ResourceDao;
 import com.ms.dao.RoleDao;
 import com.ms.entity.Resource;
 import com.ms.entity.Role;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -22,17 +24,21 @@ import java.util.List;
 @Component
 public class CustomSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomSecurityMetadataSource.class);
+
     @Autowired
     private ResourceDao resourceDao;
 
     @Autowired
     private RoleDao roleDao;
 
-
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
         FilterInvocation fi = (FilterInvocation)o;
         String url = fi.getRequestUrl();
+
+        LOGGER.info("============{}=============" , url);
+
         Resource r = resourceDao.findByUrl(url);
         List<Role> roles = r.getRoles();
         List<ConfigAttribute> attributes = new ArrayList<>();
