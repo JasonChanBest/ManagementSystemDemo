@@ -1,23 +1,13 @@
-package com.ms.entity;
-
-import javax.persistence.*;
-import java.io.Serializable;
+package com.ms.form.role;
 
 /**
  * @author Jason
  * @since v1.0
  */
-@Entity
-@Table(name = "`role`")
-public class Role implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "`id`")
+public class ModifyForm {
     private Long id;
-    @Column(name = "`name`")
     private String name;
 
-    /**getter、setter方法**/
     public Long getId() {
         return id;
     }

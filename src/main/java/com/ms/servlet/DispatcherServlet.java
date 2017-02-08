@@ -1,7 +1,12 @@
 package com.ms.servlet;
 
 import com.ms.config.SpringConfig;
+import org.springframework.orm.hibernate5.support.OpenSessionInViewFilter;
+import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
 /**
  * @author Jason
@@ -21,5 +26,11 @@ public class DispatcherServlet extends AbstractAnnotationConfigDispatcherServlet
     @Override
     protected String[] getServletMappings() {
         return new String[]{"*.do"};
+    }
+
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        super.onStartup(servletContext);
+        servletContext.addFilter("OpenEntityManagerInViewFilter" , OpenEntityManagerInViewFilter.class).addMappingForUrlPatterns(null , false , "/*");
     }
 }

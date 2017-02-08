@@ -12,6 +12,7 @@ import java.util.List;
 @Table(name = "`resource`")
 public class Resource implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
     private Long id;
     @Column(name = "`url`")
