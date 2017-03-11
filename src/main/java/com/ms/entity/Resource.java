@@ -17,7 +17,7 @@ public class Resource implements Serializable {
     private Long id;
     @Column(name = "`url`")
     private String url;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "`role_resource`" , joinColumns = @JoinColumn(name = "`resource_id`") , inverseJoinColumns = @JoinColumn(name = "`role_id`"))
     private List<Role> roles;
 

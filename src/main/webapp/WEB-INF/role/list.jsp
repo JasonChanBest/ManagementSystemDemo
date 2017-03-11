@@ -19,7 +19,7 @@
             <tr>
                 <td>${role.id}</td>
                 <td>${role.name}</td>
-                <td><a</td>
+                <td><a href="${deleteUrl}">删除</a></td>
             </tr>
         </c:forEach>
     </table>

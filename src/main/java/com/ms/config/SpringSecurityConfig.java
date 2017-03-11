@@ -1,10 +1,12 @@
 package com.ms.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
 /**
@@ -18,6 +20,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.securityInterceptor(getApplicationContext().getBean(FilterSecurityInterceptor.class));
     }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(getApplicationContext().getBean(UserDetailsService.class));
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
@@ -27,6 +35,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             .passwordParameter("password")//密码参数名
             .successForwardUrl("/index.do")//登陆成功后返回页面
             .failureForwardUrl("/404.jsp")//登陆失败后返回页面
+            .and()
+            .logout()
+            .logoutUrl("/user/logout.do")
+            .logoutSuccessUrl("/user/loginInit.do")
+            .and()
+            .rememberMe()
             .and()
             .authorizeRequests()
             .antMatchers("/**.do")//首先对.do请求进行权限认证拦截

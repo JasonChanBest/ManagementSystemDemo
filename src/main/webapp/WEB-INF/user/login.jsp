@@ -15,6 +15,7 @@
     <sp:form action="/user/login.do" modelAttribute="loginForm">
         <sp:input path="name"/>
         <sp:input path="password"/>
+        <input type="checkbox" name="remember-me">
         <input type="submit"/>
     </sp:form>
 </body>
