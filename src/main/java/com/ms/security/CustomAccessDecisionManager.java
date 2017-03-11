@@ -17,10 +17,15 @@ import java.util.Collection;
  */
 @Component
 public class CustomAccessDecisionManager implements AccessDecisionManager {
+
     @Override
     public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
-        if(collection.isEmpty())
+
+        if("admin".equals(authentication.getName()))
             return;
+
+        if(collection.isEmpty())
+            throw new AccessDeniedException("没有访问权限！");
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for(ConfigAttribute ca : collection) {

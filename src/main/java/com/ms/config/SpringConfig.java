@@ -65,12 +65,4 @@ public class SpringConfig {
         return jtm;
     }
 
-    @Bean
-    public FilterSecurityInterceptor filterSecurityInterceptor(AccessDecisionManager adm , FilterInvocationSecurityMetadataSource fisms) {
-        FilterSecurityInterceptor fsi = new FilterSecurityInterceptor();
-        fsi.setSecurityMetadataSource(fisms);
-        fsi.setAccessDecisionManager(adm);
-        return fsi;
-    }
-
 }

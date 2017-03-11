@@ -37,11 +37,17 @@ public class CustomSecurityMetadataSource implements FilterInvocationSecurityMet
         FilterInvocation fi = (FilterInvocation)o;
         String url = fi.getRequestUrl();
 
-        LOGGER.info("============{}=============" , url);
+        List<ConfigAttribute> attributes = new ArrayList<>();
 
         Resource r = resourceDao.findByUrl(url);
+
+        if(r == null) {
+            attributes.add(new SecurityConfig("forbid"));
+            return attributes;
+        }
+
+
         List<Role> roles = r.getRoles();
-        List<ConfigAttribute> attributes = new ArrayList<>();
         for(Role role : roles) {
             attributes.add(new SecurityConfig(role.getName()));
         }
@@ -50,6 +56,7 @@ public class CustomSecurityMetadataSource implements FilterInvocationSecurityMet
 
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
+
         List<Role> roles = roleDao.findAll();
         List<ConfigAttribute> attributes = new ArrayList<>();
         for(Role role : roles) {
