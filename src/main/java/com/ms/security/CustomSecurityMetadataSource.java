@@ -37,12 +37,13 @@ public class CustomSecurityMetadataSource implements FilterInvocationSecurityMet
         FilterInvocation fi = (FilterInvocation)o;
         String url = fi.getRequestUrl();
 
+        System.err.println("===========" + url + "===========");
+
         List<ConfigAttribute> attributes = new ArrayList<>();
 
         Resource r = resourceDao.findByUrl(url);
 
         if(r == null) {
-            attributes.add(new SecurityConfig("forbid"));
             return attributes;
         }
 

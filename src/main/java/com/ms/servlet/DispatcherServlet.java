@@ -31,6 +31,5 @@ public class DispatcherServlet extends AbstractAnnotationConfigDispatcherServlet
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
-        servletContext.addFilter("OpenEntityManagerInViewFilter" , OpenEntityManagerInViewFilter.class).addMappingForUrlPatterns(null , false , "/*");
     }
 }

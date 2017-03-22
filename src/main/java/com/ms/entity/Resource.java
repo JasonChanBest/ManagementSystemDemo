@@ -15,6 +15,8 @@ public class Resource implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
     private Long id;
+    @Column("`name`")
+    private String name;
     @Column(name = "`url`")
     private String url;
     @ManyToMany(fetch = FetchType.EAGER)
@@ -44,5 +46,13 @@ public class Resource implements Serializable {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
