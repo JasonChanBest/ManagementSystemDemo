@@ -25,7 +25,7 @@ public class RoleController {
 
     @RequestMapping("/addInit")
     public String addInit(@ModelAttribute("form") AddForm form) {
-        return "role/save";
+        return "role/add";
     }
 
     @RequestMapping("/add")

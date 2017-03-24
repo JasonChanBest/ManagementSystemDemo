@@ -16,4 +16,6 @@ public interface RoleService {
     List<Role> list();
 
     Role get(Long roleId);
+
+    List<Role> findAll(Iterable<Long> ids);
 }

@@ -15,7 +15,7 @@ public class Resource implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
     private Long id;
-    @Column("`name`")
+    @Column(name = "`name`")
     private String name;
     @Column(name = "`url`")
     private String url;

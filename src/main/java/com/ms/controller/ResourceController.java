@@ -25,7 +25,7 @@ public class ResourceController {
 
     @RequestMapping("/addInit")
     public String addInit(@ModelAttribute("form") AddForm form) {
-        return "add";
+        return "resource/add";
     }
 
     @RequestMapping("/add")
@@ -34,20 +34,27 @@ public class ResourceController {
         resource.setName(form.getName());
         resource.setUrl(form.getUrl());
         resourceService.save(resource);
-        return "list";
+        return "forward:/resource/list.do";
     }
 
     @RequestMapping("/delete")
     public String delete(Long id) {
         resourceService.delete(id);
-        return "list";
+        return "forward:/resource/list.do";
     }
 
     @RequestMapping("/list")
     public String list(Model model) {
         List<Resource> resources = resourceService.list();
         model.addAttribute("resources", resources);
-        return "list";
+        return "resource/list";
+    }
+
+    @RequestMapping("/modifyInit")
+    public String modifyInit(Long id , Model model) {
+        Resource resource = resourceService.get(id);
+        model.addAttribute("resource" , resource);
+        return "resource/modify";
     }
 
     @RequestMapping("/modify")
@@ -56,7 +63,7 @@ public class ResourceController {
         resource.setName(modifyForm.getName());
         resource.setUrl(modifyForm.getUrl());
         resourceService.save(resource);
-        return "modify";
+        return "resource/modify";
     }
 
 }

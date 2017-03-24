@@ -1,8 +1,7 @@
 package com.ms.servlet;
 
 import com.ms.config.SpringConfig;
-import org.springframework.orm.hibernate5.support.OpenSessionInViewFilter;
-import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.ServletContext;
@@ -31,5 +30,7 @@ public class DispatcherServlet extends AbstractAnnotationConfigDispatcherServlet
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter("UTF-8");
+        servletContext.addFilter("characterEncodingFilter", characterEncodingFilter).addMappingForUrlPatterns(null, false, "/*");
     }
 }

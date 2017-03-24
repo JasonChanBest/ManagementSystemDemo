@@ -6,6 +6,7 @@ import com.ms.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -36,6 +37,11 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role get(Long roleId) {
         return roleDao.findOne(roleId);
+    }
+
+    @Override
+    public List<Role> findAll(Iterable<Long> ids) {
+        return roleDao.findAll(ids);
     }
 
 }

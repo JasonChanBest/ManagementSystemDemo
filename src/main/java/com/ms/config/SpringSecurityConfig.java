@@ -46,6 +46,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoring()
                 .antMatchers("/**.js", "/**.css", "/**.jpg", "/**.png", "/**.ico", "/**.jsp")
                 .and()
+                //配置FilterSecurityInterceptor拦截器，
+                // 这个拦截器注入了我们自己实现的CustomSecurityMetadataSource和CustomAccessDecisionManager
+                //CustomSecurityMetadataSource会根据当前访问的url从数据库中找出访问这个url所需要的用户角色，
+                //而CustomAccessDecisionManager则会根据当前登陆的用户所拥有的角色判断这个用户能不能访问这个url
                 .securityInterceptor(filterSecurityInterceptor);
     }
 
@@ -64,12 +68,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                //配置FilterSecurityInterceptor拦截器，
-                // 上面的代码中，这个拦截器配置了我们自己实现的CustomSecurityMetadataSource和CustomAccessDecisionManager
-                //CustomSecurityMetadataSource会根据当前访问的url从数据库中找出访问这个url所需要的用户角色，
-                //而CustomAccessDecisionManager则会根据当前登陆的用户所拥有的角色判断这个用户能不能访问这个url
-//                .addFilter(filterSecurityInterceptor)
-
                 .authorizeRequests()
                 .antMatchers("/user/loginInit.do")
                 .anonymous()
