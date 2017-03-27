@@ -1,7 +1,11 @@
 package com.ms.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -10,7 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "`user`")
-public class User implements Serializable {
+public class User implements Serializable , UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
@@ -27,6 +31,36 @@ public class User implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "`user_role`" , joinColumns = @JoinColumn(name = "`user_id`") , inverseJoinColumns = @JoinColumn(name = "`role_id`"))
     private List<Role> roles;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.name;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.enable;
+    }
 
     /**getter、setter方法**/
     public Long getId() {
@@ -45,6 +79,7 @@ public class User implements Serializable {
         this.name = name;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }

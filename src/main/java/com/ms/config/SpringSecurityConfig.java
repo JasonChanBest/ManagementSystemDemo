@@ -70,12 +70,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/user/loginInit.do")
-                .anonymous()
+                .anonymous()//登陆页面可以匿名访问
 
                 .and()
                 .authorizeRequests()
                 .anyRequest()
-                .authenticated()
+                .authenticated()//所有访问请求都必须经过用户认证才能访问
 
                 .and()
                 .formLogin()

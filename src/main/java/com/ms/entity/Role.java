@@ -1,7 +1,8 @@
 package com.ms.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * @author Jason
@@ -9,13 +10,18 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "`role`")
-public class Role implements Serializable {
+public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
     private Long id;
     @Column(name = "`name`")
     private String name;
+
+    @Override
+    public String getAuthority() {
+        return this.name;
+    }
 
     /**getter、setter方法**/
     public Long getId() {
