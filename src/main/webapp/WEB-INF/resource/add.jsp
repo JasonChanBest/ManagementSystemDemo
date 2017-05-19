@@ -5,7 +5,7 @@
 <head>
     <link rel="stylesheet" href="${path}/resource/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="${path}/resource/bootstrap/css/bootstrap-theme.min.css"/>
-    <script type="application/javascript" src="${path}/resource/jquery-3.2.0.min.js"></script>
+    <script type="application/javascript" src="${path}/resource/jquery.min.js"></script>
     <script type="application/javascript" src="${path}/resource/bootstrap/js/bootstrap.min.js"></script>
     <script type="application/javascript" src="${path}/resource/vue.min.js"></script>
     <script type="application/javascript">
