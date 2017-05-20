@@ -25,7 +25,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public Menu get(Long id) {
-        return menuDao.getOne(id);
+        return menuDao.findOne(id);
     }
 
     @Override

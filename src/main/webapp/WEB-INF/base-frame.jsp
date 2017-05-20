@@ -3,24 +3,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <html>
 <head>
+    <title><sitemesh:write property="title"/></title>
+
     <script type="application/javascript" src="${path}/resource/jquery.min.js"></script>
     <script type="application/javascript" src="${path}/resource/bootstrap/js/bootstrap.min.js"></script>
     <script type="application/javascript" src="${path}/resource/vue.min.js"></script>
     <script type="application/javascript" src="${path}/resource/bootstrap-treeview/bootstrap-treeview.min.js"></script>
 
-    <script type="application/javascript" src="${path}/resource/menu.js"></script>
+    <script type="application/javascript" src="${path}/resource/base-frame.js"></script>
 
     <link rel="stylesheet" href="${path}/resource/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="${path}/resource/bootstrap/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="${path}/resource/bootstrap-treeview/bootstrap-treeview.min.css">
 
-    <script type="application/javascript">
-        $(function(){
-            loadMenu();
-        });
-    </script>
+    <sitemesh:write property="head"/>
 
-    <sitemesh:write property='head'/>
 </head>
 <body>
     <div class="container">
@@ -33,5 +30,11 @@
             </div>
         </div>
     </div>
+
+    <script type="application/javascript">
+        $(function(){
+            loadMenu();
+        });
+    </script>
 </body>
 </html>
